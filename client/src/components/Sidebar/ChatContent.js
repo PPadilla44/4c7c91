@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import NotificationBubble from "../ActiveChat/NotificationBubble";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +37,7 @@ const ChatContent = (props) => {
           {latestMessageText}
         </Typography>
       </Box>
+      <NotificationBubble text={conversation.messages.length + 8}/>
     </Box>
   );
 };
