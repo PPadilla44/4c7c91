@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import NotificationBubble from "../ActiveChat/NotificationBubble";
+import NotificationBubble from "./NotificationBubble";
 
 const useStyles = makeStyles((theme) => ({
   root: {
