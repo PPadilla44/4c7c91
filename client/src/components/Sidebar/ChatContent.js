@@ -37,7 +37,7 @@ const ChatContent = (props) => {
           {latestMessageText}
         </Typography>
       </Box>
-      <NotificationBubble text={conversation.messages.length + 8}/>
+      { conversation.unreadMessages && <NotificationBubble conversation={conversation}/>}
     </Box>
   );
 };
