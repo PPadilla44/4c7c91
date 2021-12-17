@@ -5,6 +5,7 @@ import {
   addConversation,
   setNewMessage,
   setSearchedUsers,
+  setReadMessages
 } from "../conversations";
 import { gotUser, setFetchingStatus } from "../user";
 
@@ -95,7 +96,6 @@ const sendMessage = (data, body) => {
 // conversationId will be set to null if its a brand new conversation
 export const postMessage = (body) => async (dispatch) => {
   try {
-    // Added await
     const data = await saveMessage(body);
 
     if (!body.conversationId) {
@@ -118,3 +118,20 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
     console.error(error);
   }
 };
+
+export const updateMessages = (messages, userId) => async (dispatch) => {
+
+  const unreadMessages = messages.filter((msg) => !msg.isRead)
+  const lastMessage = messages[messages.length - 1] || false;
+  
+  if (lastMessage.senderId !== userId.id && unreadMessages.length > 0) {
+    try {
+      await axios.put(`/api/messages/update`, unreadMessages);
+      let temp = setReadMessages(unreadMessages)
+      dispatch(temp)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+}

@@ -32,14 +32,10 @@ const useStyles = makeStyles(() => ({
 
 const NotificationBubble = (props) => {
     const classes = useStyles();
-    const { conversation } = props;
-    const { unreadMessages, messages } = conversation;
+    const { messages } = props;
+    const unreadMessages = messages.filter((msg) => !msg.isRead)
     const text = unreadMessages.length;
-    
-    if(messages[messages.length -1].senderId === conversation.otherUser.id ) {
 
-    }
-    
     return (
         <Box className={ `${classes.root} ${text < 10 ? classes.circle : classes.oval}` } >
             <Typography className={classes.text}>{text}</Typography>

@@ -6,7 +6,6 @@ export const addMessageToStore = (state, payload) => {
       id: message.conversationId,
       otherUser: sender,
       messages: [message],
-      unreadMessages: []
     };
     newConvo.latestMessageText = message.text;
     return [newConvo, ...state];
@@ -14,14 +13,9 @@ export const addMessageToStore = (state, payload) => {
 
   return state.map((convo) => {
     if (convo.id === message.conversationId) {
-      // Made a copy of the convo
       const convoCopy = { ...convo };
-      // Made copy of messages array
       convoCopy.messages = [ ...convoCopy.messages, message ];
       convoCopy.latestMessageText = message.text;
-
-      convoCopy.unreadMessages = convoCopy.unreadMessages ? [ ...convoCopy.unreadMessages, message.id ] : [message.id];
-
       return convoCopy;
     } else {
       return convo;
@@ -76,10 +70,8 @@ export const addSearchedUsersToStore = (state, users) => {
 export const addNewConvoToStore = (state, recipientId, message) => {
   return state.map((convo) => {
     if (convo.otherUser.id === recipientId) {
-      // Made a copy of the convo
       const convoCopy = { ...convo };
       convoCopy.id = message.conversationId;
-      // Made copy of messages array
       convoCopy.messages = [ ...convoCopy.messages, message ]
       convoCopy.latestMessageText = message.text;
       return convoCopy;
@@ -88,3 +80,25 @@ export const addNewConvoToStore = (state, recipientId, message) => {
     }
   });
 };
+
+export const setReadMessagesInStore = (state, messages) => {
+  return state.map((convo) => {
+    if (convo.id === messages[0].conversationId) {
+      const convoCopy = { ...convo };
+
+      const messagesCopy = convoCopy.messages.map((msg) => {
+        const copyMsg = { ...msg };
+        if(!copyMsg.isRead) {
+          copyMsg.isRead = true;
+        } 
+          return copyMsg;
+      })
+
+      convoCopy.messages = messagesCopy;
+
+      return convoCopy;
+    } else {
+      return convo;
+    }
+  })
+}
