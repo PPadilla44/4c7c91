@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FormControl, FilledInput } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
-import { postMessage } from "../../store/utils/thunkCreators";
+import { postMessage, setIsTyping } from "../../store/utils/thunkCreators";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -20,9 +20,24 @@ const useStyles = makeStyles(() => ({
 const Input = (props) => {
   const classes = useStyles();
   const [text, setText] = useState("");
-  const { postMessage, otherUser, conversationId, user } = props;
+  const [typing, setTyping] = useState(false);
+  const [ timeoutVar, setTimeoutVar ] = useState();
+  const { postMessage, otherUser, conversationId, user, setIsTyping } = props;
+
+  const timeoutFunction = () => {
+    setTyping(false);
+    setIsTyping({ typing: false, conversationId });
+  }
 
   const handleChange = (event) => {
+    if (!typing) {
+      setTyping(true)
+      setIsTyping({ typing: true, conversationId })
+      setTimeoutVar( setTimeout(timeoutFunction, 3000) );
+    } else {
+      setTimeoutVar( undefined )
+    }
+    
     setText(event.target.value);
   };
 
@@ -59,6 +74,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     postMessage: (message) => {
       dispatch(postMessage(message));
+    },
+    setIsTyping: (data) => {
+      dispatch(setIsTyping(data));
     },
   };
 };

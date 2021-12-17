@@ -25,6 +25,10 @@ socket.on("connect", () => {
   socket.on("update-messages", (data) => {
     store.dispatch(setReadMessages(data));
   });
+  socket.on("set-typing-status", (data) => {
+    // store.dispatch(setReadMessages(data));
+    console.log(data);
+  });
 
 });
 

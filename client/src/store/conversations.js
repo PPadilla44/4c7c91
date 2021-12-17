@@ -4,7 +4,8 @@ import {
   addSearchedUsersToStore,
   removeOfflineUserFromStore,
   addMessageToStore,
-  setReadMessagesInStore
+  setReadMessagesInStore,
+  setTypingStatusInStore
 } from "./utils/reducerFunctions";
 
 // ACTIONS
@@ -17,6 +18,8 @@ const SET_SEARCHED_USERS = "SET_SEARCHED_USERS";
 const CLEAR_SEARCHED_USERS = "CLEAR_SEARCHED_USERS";
 const ADD_CONVERSATION = "ADD_CONVERSATION";
 const SET_READ_MESSAGES = "SET_READ_MESSAGES";
+const SET_TYPING_STATUS = "SET_TYPING_STATUS"
+
 
 // ACTION CREATORS
 
@@ -76,6 +79,13 @@ export const setReadMessages  = (messages) => {
   }
 }
 
+export const setTypingStatus  = (data) => {
+  return {
+    type: SET_TYPING_STATUS,
+    payload: data,
+  }
+}
+
 // REDUCER
 
 const reducer = (state = [], action) => {
@@ -102,6 +112,8 @@ const reducer = (state = [], action) => {
       );
     case SET_READ_MESSAGES:
       return setReadMessagesInStore(state, action.payload)
+    case SET_TYPING_STATUS:
+        return setTypingStatusInStore(state, action.payload)
     default:
       return state;
   }

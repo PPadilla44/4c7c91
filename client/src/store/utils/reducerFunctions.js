@@ -14,7 +14,7 @@ export const addMessageToStore = (state, payload) => {
   return state.map((convo) => {
     if (convo.id === message.conversationId) {
       const convoCopy = { ...convo };
-      convoCopy.messages = [ ...convoCopy.messages, message ];
+      convoCopy.messages = [...convoCopy.messages, message];
       convoCopy.latestMessageText = message.text;
       return convoCopy;
     } else {
@@ -72,7 +72,7 @@ export const addNewConvoToStore = (state, recipientId, message) => {
     if (convo.otherUser.id === recipientId) {
       const convoCopy = { ...convo };
       convoCopy.id = message.conversationId;
-      convoCopy.messages = [ ...convoCopy.messages, message ]
+      convoCopy.messages = [...convoCopy.messages, message]
       convoCopy.latestMessageText = message.text;
       return convoCopy;
     } else {
@@ -88,14 +88,26 @@ export const setReadMessagesInStore = (state, messages) => {
 
       const messagesCopy = convoCopy.messages.map((msg) => {
         const copyMsg = { ...msg };
-        if(!copyMsg.isRead) {
+        if (!copyMsg.isRead) {
           copyMsg.isRead = true;
-        } 
-          return copyMsg;
+        }
+        return copyMsg;
       })
 
       convoCopy.messages = messagesCopy;
 
+      return convoCopy;
+    } else {
+      return convo;
+    }
+  })
+}
+
+export const setTypingStatusInStore = (state, data) => {
+  return state.map((convo) => {
+    if (convo.id === data.conversationId) {
+      const convoCopy = { ...convo };
+      convoCopy.isTyping = data.typing;
       return convoCopy;
     } else {
       return convo;

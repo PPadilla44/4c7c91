@@ -124,12 +124,12 @@ export const updateMessages = (messages, userId) => async (dispatch) => {
 
   const unreadMessages = messages.filter((msg) => !msg.isRead)
   const lastMessage = messages[messages.length - 1] || false;
-  
+
   if (lastMessage.senderId !== userId && unreadMessages.length > 0) {
     try {
       dispatch(setReadMessages(unreadMessages));
 
-      socket.emit("update-messages", 
+      socket.emit("update-messages",
         unreadMessages
       );
 
@@ -138,5 +138,11 @@ export const updateMessages = (messages, userId) => async (dispatch) => {
       console.log(error);
     }
   }
-  
+
+}
+
+export const setIsTyping = (data) => async (dispatch) => {
+  socket.emit("set-typing-status",
+    data
+  );
 }
