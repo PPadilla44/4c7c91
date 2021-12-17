@@ -27,7 +27,7 @@ const ChatContent = (props) => {
   const { conversation } = props;
   const { latestMessageText, otherUser } = conversation;
   const { messages } = conversation;
-  const lastMessage = messages[messages.length -1] || false;
+  const lastMessage = messages[messages.length - 1] || false;
 
 
   return (
@@ -36,11 +36,19 @@ const ChatContent = (props) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={classes.previewText}>
-          {latestMessageText}
-        </Typography>
+        {lastMessage.senderId === otherUser.id && !lastMessage.isRead ?
+
+          <Typography className={classes.username}>
+            {latestMessageText}
+          </Typography>
+          :
+          <Typography className={classes.previewText}>
+            {latestMessageText}
+          </Typography>
+
+        }
       </Box>
-      { lastMessage.senderId === otherUser.id && !lastMessage.isRead && <NotificationBubble messages={messages}/> }
+      {lastMessage.senderId === otherUser.id && !lastMessage.isRead && <NotificationBubble messages={messages} />}
     </Box>
   );
 };
