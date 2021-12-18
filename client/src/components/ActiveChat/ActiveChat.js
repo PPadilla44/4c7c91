@@ -24,7 +24,6 @@ const ActiveChat = (props) => {
   const classes = useStyles();
   const { user } = props;
   const conversation = props.conversation || {};
-  console.log(conversation);
 
   return (
     <Box className={classes.root}>
@@ -38,6 +37,7 @@ const ActiveChat = (props) => {
             <Messages
               messages={conversation.messages}
               otherUser={conversation.otherUser}
+              isTyping={conversation.isTyping || false}
               userId={user.id}
             />
             <Input

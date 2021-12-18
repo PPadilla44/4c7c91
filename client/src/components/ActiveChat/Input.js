@@ -20,26 +20,29 @@ const useStyles = makeStyles(() => ({
 const Input = (props) => {
   const classes = useStyles();
   const [text, setText] = useState("");
-  const [typing, setTyping] = useState(false);
-  const [ timeoutVar, setTimeoutVar ] = useState();
+  const [typing, setTyping] = useState();
   const { postMessage, otherUser, conversationId, user, setIsTyping } = props;
-
-  const timeoutFunction = () => {
-    setTyping(false);
-    setIsTyping({ typing: false, conversationId });
-  }
-
+  
   const handleChange = (event) => {
-    if (!typing) {
-      setTyping(true)
-      setIsTyping({ typing: true, conversationId })
-      setTimeoutVar( setTimeout(timeoutFunction, 3000) );
+    setText(event.target.value);
+    
+    if (event.target.value.length > 0) {
+      if (!typing) {
+        setTyping(true);
+        setIsTyping({ typing: true , conversationId });
+      }
     } else {
-      setTimeoutVar( undefined )
+      setTyping(false);
+      setIsTyping({typing: false, conversationId});
     }
     
-    setText(event.target.value);
   };
+
+  const handleBlur = (e) => {
+    setTyping(false);
+    setIsTyping({typing: false, conversationId});
+  }
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -63,6 +66,7 @@ const Input = (props) => {
           placeholder="Type something..."
           value={text}
           name="text"
+          onBlur={handleBlur}
           onChange={handleChange}
         />
       </FormControl>

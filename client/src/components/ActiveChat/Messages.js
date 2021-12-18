@@ -4,10 +4,11 @@ import { SenderBubble, OtherUserBubble } from "../ActiveChat";
 import moment from "moment";
 import { connect } from "react-redux";
 import { updateMessages } from "../../store/utils/thunkCreators";
+import TypingBubble from "./TypingBubble";
 
 const Messages = (props) => {
 
-  const { messages, otherUser, userId, updateMessages } = props;
+  const { messages, otherUser, userId, updateMessages, isTyping } = props;
   const [latestRead, setLatestRead] = useState({});
 
   useEffect(() => {
@@ -21,7 +22,7 @@ const Messages = (props) => {
         break;
       }
     }
-    
+
   }, [updateMessages, messages, userId])
 
 
@@ -38,8 +39,9 @@ const Messages = (props) => {
             <SenderBubble key={message.id} text={message.text} time={time} />
         ) : (
           <OtherUserBubble key={message.id} text={message.text} time={time} otherUser={otherUser} />
-        );
-      })}
+          );
+        })}
+        { isTyping && <TypingBubble text={"TYPING"}  otherUser={otherUser} /> }
     </Box>
   );
 };
