@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 const db = require("../db");
-const { Op } = require("sequelize");
 
 const Message = db.define("message", {
   text: {
@@ -13,24 +12,23 @@ const Message = db.define("message", {
   },
   isRead: {
     type: Sequelize.BOOLEAN,
-    allowNull: true,
+    defaultValue: false
   }
 });
 
-Message.updateMessages = async function (messages) {
-  const ids = messages.map((msg => msg.id))
+Message.updateMessages = async function ({ conversationId }) {
+
   const updatedMessages = await Message.update(
     {
       isRead: true
     },
     {
       where: {
-        id: {
-          [Op.in]: ids
-        }
+        conversationId: conversationId
       }
     }
   )
+
   return updatedMessages;
 }
 

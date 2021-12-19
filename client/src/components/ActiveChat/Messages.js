@@ -13,17 +13,21 @@ const Messages = (props) => {
 
   useEffect(() => {
 
-    updateMessages(messages, userId)
+    if (messages.length > 0) {
 
-    for (let i = messages.length - 1; i >= 0; i--) {
-      let tempLatestMessage = messages[i];
-      if (tempLatestMessage.senderId === userId && tempLatestMessage.isRead) {
-        setLatestRead(tempLatestMessage);
-        break;
+      updateMessages(messages[messages.length - 1], userId)
+
+      for (let i = messages.length - 1; i >= 0; i--) {
+        let tempLatestMessage = messages[i];
+        if (tempLatestMessage.senderId === userId && tempLatestMessage.isRead) {
+          setLatestRead(tempLatestMessage);
+          break;
+        }
       }
+
     }
 
-  }, [updateMessages, messages, userId])
+  }, [updateMessages, messages, userId, latestRead])
 
 
   return (
@@ -39,17 +43,17 @@ const Messages = (props) => {
             <SenderBubble key={message.id} text={message.text} time={time} />
         ) : (
           <OtherUserBubble key={message.id} text={message.text} time={time} otherUser={otherUser} />
-          );
-        })}
-        { isTyping && <TypingBubble otherUser={otherUser} /> }
+        );
+      })}
+      {isTyping && <TypingBubble otherUser={otherUser} />}
     </Box>
   );
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateMessages: (messages, userId) => {
-      dispatch(updateMessages(messages, userId));
+    updateMessages: (lastMessage, userId) => {
+      dispatch(updateMessages(lastMessage, userId));
     },
   };
 };

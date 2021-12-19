@@ -72,10 +72,10 @@ export const addConversation = (recipientId, newMessage) => {
   };
 };
 
-export const setReadMessages  = (messages) => {
+export const setReadMessages  = (conversationId) => {
   return {
     type: SET_READ_MESSAGES,
-    payload: messages,
+    payload: conversationId,
   }
 }
 

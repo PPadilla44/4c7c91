@@ -120,20 +120,18 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
 };
 
 
-export const updateMessages = (messages, userId) => async (dispatch) => {
+export const updateMessages = (lastMessage, userId) => async (dispatch) => {
 
-  const unreadMessages = messages.filter((msg) => !msg.isRead)
-  const lastMessage = messages[messages.length - 1] || false;
-
-  if (lastMessage.senderId !== userId && unreadMessages.length > 0) {
+  if (lastMessage.senderId !== userId && !lastMessage.isRead) {
     try {
-      dispatch(setReadMessages(unreadMessages));
+      const conversationId = lastMessage.conversationId;
+
+      dispatch(setReadMessages(conversationId));
 
       socket.emit("update-messages",
-        unreadMessages
+        conversationId
       );
-
-      await axios.put(`/api/messages/update`, unreadMessages);
+      await axios.put(`/api/messages/update`, { lastMessage });
     } catch (error) {
       console.log(error);
     }
