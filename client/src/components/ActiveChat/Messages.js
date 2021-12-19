@@ -41,7 +41,7 @@ const Messages = (props) => {
           <OtherUserBubble key={message.id} text={message.text} time={time} otherUser={otherUser} />
           );
         })}
-        { isTyping && <TypingBubble text={"TYPING"}  otherUser={otherUser} /> }
+        { isTyping && <TypingBubble otherUser={otherUser} /> }
     </Box>
   );
 };
