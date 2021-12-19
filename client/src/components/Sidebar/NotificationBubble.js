@@ -10,7 +10,8 @@ const useStyles = makeStyles(() => ({
         justifyContent: "center",
         width: "100%",
         height: "30px",
-        alignSelf: "center"
+        alignSelf: "center",
+        marginRight: 20
     },
     circle : {
         maxWidth: "30px",
