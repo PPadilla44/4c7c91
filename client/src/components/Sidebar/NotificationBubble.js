@@ -33,13 +33,11 @@ const useStyles = makeStyles(() => ({
 
 const NotificationBubble = (props) => {
     const classes = useStyles();
-    const { messages } = props;
-    const unreadMessages = messages.filter((msg) => !msg.isRead)
-    const text = unreadMessages.length;
+    const { totalUnreadMessages } = props;
 
     return (
-        <Box className={ `${classes.root} ${text < 10 ? classes.circle : classes.oval}` } >
-            <Typography className={classes.text}>{text}</Typography>
+        <Box className={ `${classes.root} ${totalUnreadMessages < 10 ? classes.circle : classes.oval}` } >
+            <Typography className={classes.text}>{totalUnreadMessages}</Typography>
         </Box>
     );
 };

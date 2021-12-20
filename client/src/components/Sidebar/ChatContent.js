@@ -26,7 +26,7 @@ const ChatContent = (props) => {
 
   const { conversation } = props;
   const { latestMessageText, otherUser } = conversation;
-  const { messages } = conversation;
+  const { messages, totalUnreadMessages } = conversation;
   const lastMessage = messages[messages.length - 1] || false;
 
 
@@ -48,7 +48,7 @@ const ChatContent = (props) => {
 
         }
       </Box>
-      {lastMessage.senderId === otherUser.id && !lastMessage.isRead && <NotificationBubble messages={messages} />}
+      {lastMessage.senderId === otherUser.id && !lastMessage.isRead && <NotificationBubble totalUnreadMessages={totalUnreadMessages} />}
     </Box>
   );
 };
