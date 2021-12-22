@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import NotificationBubble from "./NotificationBubble";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,6 +26,9 @@ const ChatContent = (props) => {
 
   const { conversation } = props;
   const { latestMessageText, otherUser } = conversation;
+  const { messages, totalUnreadMessages } = conversation;
+  const lastMessage = messages[messages.length - 1] || false;
+
 
   return (
     <Box className={classes.root}>
@@ -32,10 +36,19 @@ const ChatContent = (props) => {
         <Typography className={classes.username}>
           {otherUser.username}
         </Typography>
-        <Typography className={classes.previewText}>
-          {latestMessageText}
-        </Typography>
+        {lastMessage.senderId === otherUser.id && !lastMessage.isRead ?
+
+          <Typography className={classes.username}>
+            {latestMessageText}
+          </Typography>
+          :
+          <Typography className={classes.previewText}>
+            {  conversation.isTyping ? "Typing..." : latestMessageText}
+          </Typography>
+
+        }
       </Box>
+      {lastMessage.senderId === otherUser.id && !lastMessage.isRead && <NotificationBubble totalUnreadMessages={totalUnreadMessages} />}
     </Box>
   );
 };

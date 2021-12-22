@@ -10,6 +10,27 @@ const Message = db.define("message", {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
+  isRead: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  }
 });
+
+Message.updateMessages = async function ({ conversationId }) {
+
+  const updatedMessages = await Message.update(
+    {
+      isRead: true
+    },
+    {
+      where: {
+        conversationId: conversationId,
+        isRead: false,
+      }
+    }
+  )
+
+  return updatedMessages;
+}
 
 module.exports = Message;

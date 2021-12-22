@@ -6,6 +6,7 @@ export const addMessageToStore = (state, payload) => {
       id: message.conversationId,
       otherUser: sender,
       messages: [message],
+      totalUnreadMessages: 1
     };
     newConvo.latestMessageText = message.text;
     return [newConvo, ...state];
@@ -14,7 +15,8 @@ export const addMessageToStore = (state, payload) => {
   return state.map((convo) => {
     if (convo.id === message.conversationId) {
       const convoCopy = { ...convo };
-      convoCopy.messages = [ ...convoCopy.messages, message ]
+      convoCopy.totalUnreadMessages++;
+      convoCopy.messages = [...convoCopy.messages, message];
       convoCopy.latestMessageText = message.text;
       return convoCopy;
     } else {
@@ -72,6 +74,7 @@ export const addNewConvoToStore = (state, recipientId, message) => {
     if (convo.otherUser.id === recipientId) {
       const convoCopy = { ...convo };
       convoCopy.id = message.conversationId;
+      convoCopy.totalUnreadMessages = 1;
       convoCopy.messages = [ ...convoCopy.messages, message ]
       convoCopy.latestMessageText = message.text;
       return convoCopy;
@@ -80,3 +83,39 @@ export const addNewConvoToStore = (state, recipientId, message) => {
     }
   });
 };
+
+export const setReadMessagesInStore = (state, conversationId) => {
+  return state.map((convo) => {
+    if (convo.id === conversationId) {
+      const convoCopy = { ...convo };
+
+      const messagesCopy = convoCopy.messages.map((msg) => {
+        const copyMsg = { ...msg };
+        if (!copyMsg.isRead) {
+          copyMsg.isRead = true;
+        }
+        return copyMsg;
+      })
+
+      convoCopy.totalUnreadMessages = 0;
+
+      convoCopy.messages = messagesCopy;
+
+      return convoCopy;
+    } else {
+      return convo;
+    }
+  })
+}
+
+export const setTypingStatusInStore = (state, data) => {
+  return state.map((convo) => {
+    if (convo.id === data.conversationId) {
+      const convoCopy = { ...convo };
+      convoCopy.isTyping = data.typing;
+      return convoCopy;
+    } else {
+      return convo;
+    }
+  })
+}

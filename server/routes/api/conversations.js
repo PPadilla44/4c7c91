@@ -67,6 +67,8 @@ router.get("/", async (req, res, next) => {
         convoJSON.otherUser.online = false;
       }
 
+      convoJSON.totalUnreadMessages = convoJSON.messages.filter((msg) => !msg.isRead).length
+
       convoJSON.messages = convoJSON.messages.reverse()
 
       // set properties for notification count and latest message preview
