@@ -46,7 +46,7 @@ router.post("/", async (req, res, next) => {
   }
 });
 
-router.put("/update", async (req, res, next) => {
+router.put("/", async (req, res, next) => {
   try {
     const { lastMessage } = req.body
     
@@ -56,7 +56,7 @@ router.put("/update", async (req, res, next) => {
     );
 
     if (!req.user || !conversation) {
-      return res.sendStatus(401);
+      return res.sendStatus(403);
     }
     
     await Message.updateMessages({ conversationId: lastMessage.conversationId })

@@ -131,7 +131,7 @@ export const updateMessages = (lastMessage, userId) => async (dispatch) => {
       socket.emit("update-messages",
         conversationId
       );
-      await axios.put(`/api/messages/update`, { lastMessage });
+      await axios.put(`/api/messages/`, { lastMessage });
     } catch (error) {
       console.log(error);
     }
