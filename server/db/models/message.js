@@ -24,7 +24,8 @@ Message.updateMessages = async function ({ conversationId }) {
     },
     {
       where: {
-        conversationId: conversationId
+        conversationId: conversationId,
+        isRead: false,
       }
     }
   )
